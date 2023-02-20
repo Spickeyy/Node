@@ -1,11 +1,11 @@
-dotenv.config()
 import * as dotenv from 'dotenv'
+dotenv.config()
 import express from 'express';
 
 
 const {SERVER_PORT, SERVER_DOMAIN} = process.env;
 
-if(SERVER_PORT === undefined || SERVER_DOMAIN === undefined) {
+if (SERVER_PORT === undefined || SERVER_DOMAIN === undefined) {
   throw new Error("Please define constants in '.env' file");
 }
 
