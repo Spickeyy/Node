@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 import express from 'express';
+import morgan from 'morgan';
 
 
 const {SERVER_PORT, SERVER_DOMAIN} = process.env;
@@ -10,6 +11,8 @@ if (SERVER_PORT === undefined || SERVER_DOMAIN === undefined) {
 }
 
 const server = express();
+
+server.use(morgan('tiny'));
 server.use(express.static('public'));
 
 server.listen(SERVER_PORT, () => {

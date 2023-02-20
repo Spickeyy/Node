@@ -5,15 +5,15 @@ TypeScript is a scripting language that understands JavaScript and uses type inf
 
 ### Required programs
 
-* [Node](https://nodejs.org/en/) v16 or later
+    * [Node](https://nodejs.org/en/) v16 or later
 
 ##  Project Set-up
 
-* copy file [.env.example](https://github.com/Spickeyy/Node/blob/main/.env.example) and rename it to .env
+  * copy file [.env.example](https://github.com/Spickeyy/Node/blob/main/.env.example) and rename it to .env
 
-* define constants if file .env
+  * define constants if file .env
 
-* install libraries - open terminal in root directory and run command:
+  * install libraries - open terminal in root directory and run command:
 
 ```bash
  npm i
@@ -21,7 +21,7 @@ TypeScript is a scripting language that understands JavaScript and uses type inf
 
 ## Project development launch
 
-* open terminal in root directory and run command:
+  * open terminal in root directory and run command:
 
 ```bash
  npm run start
