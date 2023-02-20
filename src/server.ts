@@ -1,14 +1,11 @@
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 
 // setup
-dotenv.config()
+dotenv.config();
 
-
-
-
-const {SERVER_PORT, SERVER_DOMAIN} = process.env;
+const { SERVER_PORT, SERVER_DOMAIN } = process.env;
 
 if (SERVER_PORT === undefined || SERVER_DOMAIN === undefined) {
   throw new Error("Please define constants in '.env' file");
@@ -16,12 +13,10 @@ if (SERVER_PORT === undefined || SERVER_DOMAIN === undefined) {
 
 const server = express();
 
-
 // Middlewares
 server.use(morgan('tiny'));
 server.use(express.static('public'));
 server.use(express.json());
-
 
 // API Router
 const movies = [
@@ -32,7 +27,6 @@ const movies = [
 ];
 const apiRouter = express.Router();
 server.use('/api', apiRouter);
-
 
 apiRouter.get('/movies', (req, res) => {
   res.status(200).json(movies);
@@ -47,5 +41,5 @@ apiRouter.post('/movies', (req, res) => {
 
 // Server init
 server.listen(SERVER_PORT, () => {
-  console.log(`server is running on: http://${SERVER_DOMAIN}:${SERVER_PORT}`)
+  console.log(`server is running on: http://${SERVER_DOMAIN}:${SERVER_PORT}`);
 });
