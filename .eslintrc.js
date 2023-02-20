@@ -3,9 +3,9 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: [
+  extends:[
     'airbnb-base',
-    'airbnb-typescript/base'
+    'airbnb-typescript/base',
   ],
   parser: '@typescript-eslint/perser',
   parserOptions: {
