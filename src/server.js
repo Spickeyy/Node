@@ -1,0 +1,1 @@
+console.log('As esu veikiantis serveris');
