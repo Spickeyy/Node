@@ -5,7 +5,7 @@ TypeScript is a scripting language that understands JavaScript and uses type inf
 
 ### Required programs
 
-    * [Node](https://nodejs.org/en/) v16 or later
+  * [Node](https://nodejs.org/en/) v16 or later
 
 ##  Project Set-up
 
