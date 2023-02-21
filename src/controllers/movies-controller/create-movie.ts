@@ -3,7 +3,7 @@ import MovieModel from './movie-model';
 import movies from './movies-data';
 
 export const isMovieData = (
-    potentialMovieData: Body | MovieData,
+    potentialMovieData: PartialMovieData | MovieData,
     ): potentialMovieData is MovieData => {
       const {
    title, price, rating, images, location,
@@ -21,12 +21,12 @@ export const isMovieData = (
   };
 
 type MovieData = Omit<MovieModel, 'id'>;
-type Body = PartialRecursive<MovieData>;
+type PartialMovieData = PartialRecursive<MovieData>;
 
 export const createMovie: RequestHandler<
     {},
     MovieModel | ResponseError,
-    Body,
+    PartialMovieData,
     {}
 > = (req, res) => {
   const movieData = req.body;
