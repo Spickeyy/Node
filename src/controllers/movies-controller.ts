@@ -1,9 +1,5 @@
 import { RequestHandler } from 'express';
 
-type ResponseError = {
-    error: string
-};
-
 type Movie = {
   id: number,
   title: string,
