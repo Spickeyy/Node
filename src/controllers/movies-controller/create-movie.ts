@@ -5,7 +5,7 @@ import { MovieModel, MovieData } from './types';
 import movies from './movies-data';
 import movieDataValidationSchema from './movie-data-validation-schema';
 
-export const createHouse: RequestHandler<
+export const createMovie: RequestHandler<
   {},
   MovieModel | ResponseError,
   MovieData,
