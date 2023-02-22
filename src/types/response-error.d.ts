@@ -1,7 +1,4 @@
-declare global {
-    type ResponseError = {
+type ResponseError = {
     error: string
-    };
-}
-
-export {};
+    errors?: string[]
+  };

@@ -1,4 +1,4 @@
-type MovieModel = {
+export type MovieModel = {
     id: string,
     title: string,
     location: {
@@ -9,4 +9,4 @@ type MovieModel = {
     rating: number
   };
 
-export default MovieModel;
+  export type MovieData = Omit<MovieModel, 'id'>;

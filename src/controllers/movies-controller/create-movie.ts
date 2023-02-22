@@ -1,73 +1,33 @@
 import { RequestHandler } from 'express';
-import * as yup from 'yup';
-import MovieModel from './movie-model';
+import { ValidationError } from 'yup';
+import createId from 'uniqid';
+import { MovieModel, MovieData } from './types';
 import movies from './movies-data';
+import movieDataValidationSchema from './movie-data-validation-schema';
 
-type MovieData = Omit<MovieModel, 'id'>;
-
-const movieDataValidationSchema: yup.ObjectSchema<MovieData> = yup.object({
-
-  title: yup.string()
-    .required('title is required')
-    .min(2, 'title must have at least 2 symbols')
-    .max(32, 'title can\'t have more than 32 symbols'),
-
-  price: yup.number()
-   .required('price is required')
-    .positive('price must be positive')
-    .test(
-      'isPrice',
-      'incorrect price format',
-     (val) => Number(val.toFixed(2)) === val,
-),
-
-  rating: yup.number()
-    .required('rating is required')
-    .positive('rating must be positive')
-    .min(1, 'rating must be at least 1')
-    .max(5, 'rating must can\'t be more than 5'),
-
-  images: yup.array(yup.string().required())
-    .required('images are required')
-    .min(1, 'images must have at least one image'),
-
-  location: yup
-    .object({
-      country: yup.string()
-        .required('location.title is required')
-        .min(1, 'location.title must be at least 1')
-        .max(5, 'location.title must can\'t be more than 5'),
-  })
-  .required('location is required'),
-
-});
-
-export const isMovieData = (
-    potentialMovieData: PartialMovieData | MovieData,
-    ): potentialMovieData is MovieData => {
-      try {
-        movieDataValidationSchema.validateSync(potentialMovieData);
-        return true;
-      } catch (error) {
-        return false;
-      }
-  };
-
-type PartialMovieData = PartialRecursive<MovieData>;
-
-export const createMovie: RequestHandler<
-    {},
-    MovieModel | ResponseError,
-    PartialMovieData,
-    {}
+export const createHouse: RequestHandler<
+  {},
+  MovieModel | ResponseError,
+  MovieData,
+  {}
 > = (req, res) => {
-  const movieData = req.body;
-  if (!isMovieData(movieData)) {
-    res.status(400).json({ error: 'Incorrect data' });
-    return;
-  }
+  try {
+    const movieData = movieDataValidationSchema.validateSync(req.body, { abortEarly: false });
+    const newMovie: MovieModel = { id: createId(), ...movieData };
+    movies.push(newMovie);
 
-  const newMovie: MovieModel = { id: '5', ...movieData };
-  movies.push(newMovie);
-  res.status(201).json(newMovie);
+    res.status(201).json(newMovie);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      const manyErrors = err.errors.length > 1;
+      res.status(400).json({
+        error: manyErrors ? 'Validation errors' : err.errors[0],
+        errors: manyErrors ? err.errors : undefined,
+      });
+    } else if (err instanceof Error) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(400).json({ error: 'Request error' });
+    }
+  }
 };
