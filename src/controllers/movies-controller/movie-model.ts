@@ -5,7 +5,7 @@ type MovieModel = {
       country: string
     },
     images: string[],
-    price: string,
+    price: number,
     rating: number
   };
 
