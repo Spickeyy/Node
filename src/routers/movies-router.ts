@@ -1,9 +1,21 @@
 import express from 'express';
-import { createMovie, getMovies } from '../controllers/movies-controller';
+import {
+
+    getMovies,
+    getMovie,
+
+    createMovie,
+    deleteMovie,
+    updateMovie,
+} from '../controllers/movies-controller';
 
 const moviesRauter = express.Router();
 
 moviesRauter.get('/', getMovies);
+moviesRauter.get('/:id', getMovie);
+
 moviesRauter.post('/', createMovie);
+moviesRauter.patch('/:id', updateMovie);
+moviesRauter.delete('/:id', deleteMovie);
 
 export default moviesRauter;

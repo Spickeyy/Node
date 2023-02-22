@@ -9,4 +9,6 @@ export type MovieModel = {
     rating: number
   };
 
-  export type MovieData = Omit<MovieModel, 'id'>;
+export type MovieData = Omit<MovieModel, 'id'>;
+
+export type PartialMovieData = Partial<MovieData>;

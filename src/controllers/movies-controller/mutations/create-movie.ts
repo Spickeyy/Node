@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
 import createId from 'uniqid';
-import { MovieModel, MovieData } from './types';
-import movies from './movies-data';
-import movieDataValidationSchema from './movie-data-validation-schema';
+import { MovieModel, MovieData } from '../types';
+import movies from '../movies-data';
+import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
 
 export const createMovie: RequestHandler<
   {},

@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "22e0d264-e881-41e8-9d08-dc2954d52e73",
+		"name": "movies",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25053515"
+	},
+	"item": [
+		{
+			"name": "many",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/movies/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"movies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/movies/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"movies",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"title\": \"Titanic\",\n      \"location\": {\n        \"country\": \"USA\"\n      },\n      \"images\": [\n        \"https://deadline.com/wp-content/uploads/2021/02/MCDTITA_FE014.jpg?w=681&h=383&crop=1\",\n        \"https://static-koimoi.akamaized.net/wp-content/new-galleries/2023/01/james-cameron-explains-the-door-situation-in-titanic-while-talking-about-the-debate-whether-it-was-possible-to-save-jack-01.jpg\",\n        \"https://cst.brightspotcdn.com/dims4/default/dad6125/2147483647/strip/true/crop/3424x2283+0+298/resize/1680x1120!/format/webp/quality/90/?url=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2F_mcXuZPHFwDiKLyiKGICkhVVGB0%3D%2F0x0%3A3424x4500%2F3424x4500%2Ffilters%3Afocal%281832x1439%3A1833x1440%29%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_asset%2Ffile%2F24412063%2FFilm_Titanic_3_D.JPG\"\n      ],\n      \"price\": 1843478449,\n      \"rating\": 4\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/movies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"title\": \"Pakeistas pavadinimas\",\n      \"rating\": 4\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/movies/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"movies",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
