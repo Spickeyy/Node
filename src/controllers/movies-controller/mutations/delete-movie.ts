@@ -24,5 +24,5 @@ export const deleteMovie: RequestHandler<
 
     const [deletedMovie] = movies.splice(foundMovieIndex, 1);
 
-    res.status(200).json(deletedMovie);
+    res.status(204).json(deletedMovie);
   };
