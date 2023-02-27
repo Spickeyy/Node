@@ -26,7 +26,7 @@ INSERT INTO movies (title, price, rating, locationId) VALUES
 ( 'Extraction', 65000000,2, 11),
 ( 'Everything Everywhere All at Once',106879147,4, 12);
 
-INSERT INTO /* bjccicbf65x3zea6wbni. */images (src, movieId) VALUES
+INSERT INTO images (src, movieId) VALUES
 ('https://deadline.com/wp-content/uploads/2021/02/MCDTITA_FE014.jpg?w=681&h=383&crop=1', 1),
 ('https://static-koimoi.akamaized.net/wp-content/new-galleries/2023/01/james-cameron-explains-the-door-situation-in-titanic-while-talking-about-the-debate-whether-it-was-possible-to-save-jack-01.jpg', 1),
 ('https://cst.brightspotcdn.com/dims4/default/dad6125/2147483647/strip/true/crop/3424x2283+0+298/resize/1680x1120!/format/webp/quality/90/?url=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2F_mcXuZPHFwDiKLyiKGICkhVVGB0%3D%2F0x0%3A3424x4500%2F3424x4500%2Ffilters%3Afocal%281832x1439%3A1833x1440%29%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_asset%2Ffile%2F24412063%2FFilm_Titanic_3_D.JPG', 1),
