@@ -1,5 +1,7 @@
-export type MovieModel = {
-    id: string,
+import { RowDataPacket } from 'mysql2';
+
+export interface MovieModel extends RowDataPacket {
+    id: number,
     title: string,
     location: {
       country: string
@@ -7,7 +9,7 @@ export type MovieModel = {
     images: string[],
     price: number,
     rating: number
-  };
+  }
 
 export type MovieData = Omit<MovieModel, 'id'>;
 
