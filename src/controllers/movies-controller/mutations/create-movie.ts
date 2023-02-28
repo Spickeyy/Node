@@ -1,22 +1,41 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
-import createId from 'uniqid';
+import mysql from 'mysql2/promise';
 import { MovieModel, MovieData } from '../types';
-import movies from '../movies-data';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
+import config from '../../../config';
 
 export const createMovie: RequestHandler<
   {},
   MovieModel | ResponseError,
   MovieData,
   {}
-> = (req, res) => {
+> = async (req, res) => {
   try {
-    const movieData = movieDataValidationSchema.validateSync(req.body, { abortEarly: false });
-    const newMovie: MovieModel = { id: createId(), ...movieData };
-    movies.push(newMovie);
+    const movieData: MovieData = movieDataValidationSchema
+      .validateSync(req.body, { abortEarly: false });
 
-    res.status(201).json(newMovie);
+    const mySqlConnection = await mysql.createConnection(config.db);
+    const sql = `
+        INSERT INTO locations (country) VALUES
+        ('${movieData.location.country}');
+
+        INSERT INTO movies (title, price, rating, locationId) VALUES
+        ('${movieData.title}', ${movieData.price}, ${movieData.rating}, LAST_INSERT_ID());
+
+        INSERT INTO images (src, movieId) VALUES
+        ${movieData.images.map((img) => `('${img}', LAST_INSERT_ID())`).join(',\n')};
+    `;
+
+    console.log(sql);
+
+    const queryResponse = await mySqlConnection.query<mysql.ResultSetHeader>(sql);
+
+    console.log(queryResponse);
+
+    await mySqlConnection.end();
+
+    res.status(201).json({} as MovieModel);
   } catch (err) {
     if (err instanceof ValidationError) {
       const manyErrors = err.errors.length > 1;

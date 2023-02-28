@@ -1,6 +1,6 @@
 import { RowDataPacket } from 'mysql2';
 
-export interface MovieModel extends RowDataPacket {
+type PrivateMovieModel = {
     id: number,
     title: string,
     location: {
@@ -9,8 +9,10 @@ export interface MovieModel extends RowDataPacket {
     images: string[],
     price: number,
     rating: number
-  }
+};
 
-export type MovieData = Omit<MovieModel, 'id'>;
+export type MovieModel = PrivateMovieModel & RowDataPacket;
+
+export type MovieData = Omit<PrivateMovieModel, 'id'>;
 
 export type PartialMovieData = Partial<MovieData>;
