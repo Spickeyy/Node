@@ -16,17 +16,21 @@ export const getMovie: RequestHandler<
         return;
     }
     const mySqlConnection = await mysql.createConnection(config.db);
-    const [movies] = await mySqlConnection.query<MovieModel[]>(`
-        SELECT m.id, m.title, JSON_OBJECT('country', l.country) as location, m.price, m.rating, json_arrayagg(i.src) as images
-        FROM images as i
-        LEFT JOIN movies as m
-        ON i.movieId = m.id
-        LEFT JOIN locations as l
-        ON m.locationId = l.id
-        WHERE m.id = ${id}
-        GROUP BY m.id;
-    `);
-    await mySqlConnection.end();
+
+    const preparedSql = `
+    SELECT m.id, m.title, JSON_OBJECT('country', l.country) as location, m.price, m.rating, json_arrayagg(i.src) as images
+    FROM images as i
+    LEFT JOIN movies as m
+    ON i.movieId = m.id
+    LEFT JOIN  locations as l
+    ON m.locationId = l.id
+    WHERE m.id = ?
+    GROUP BY m.id;
+  `;
+  const preparedSqlData = [id];
+
+  const [movies] = await mySqlConnection.query<MovieModel[]>(preparedSql, preparedSqlData);
+  await mySqlConnection.end();
 
     if (movies.length === 0) {
         res.status(404).json({ error: `movie with id <${id}> was not found` });
