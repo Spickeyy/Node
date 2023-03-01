@@ -5,6 +5,15 @@ import { MovieModel, MovieData } from '../types';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
 import config from '../../../config';
 
+type CreateMovieQueryResult =
+[
+    mysql.ResultSetHeader,
+    mysql.ResultSetHeader,
+    mysql.ResultSetHeader,
+    mysql.ResultSetHeader,
+    MovieModel[],
+  ];
+
 export const createMovie: RequestHandler<
   {},
   MovieModel | ResponseError,
@@ -16,26 +25,42 @@ export const createMovie: RequestHandler<
       .validateSync(req.body, { abortEarly: false });
 
     const mySqlConnection = await mysql.createConnection(config.db);
-    const sql = `
+
+    const preparedSql = `
         INSERT INTO locations (country) VALUES
-        ('${movieData.location.country}');
+        (?);
 
         INSERT INTO movies (title, price, rating, locationId) VALUES
-        ('${movieData.title}', ${movieData.price}, ${movieData.rating}, LAST_INSERT_ID());
+        (?, ?, ?, LAST_INSERT_ID());
+
+        SET @movieId = LAST_INSERT_ID();
 
         INSERT INTO images (src, movieId) VALUES
-        ${movieData.images.map((img) => `('${img}', LAST_INSERT_ID())`).join(',\n')};
+        ${movieData.images.map(() => '(?, @movieId)').join(',\n')};
+
+        SELECT m.id, m.title, JSON_OBJECT('country', l.country) as location, m.price, m.rating, json_arrayagg(i.src) as images
+        FROM images as i
+        LEFT JOIN movies as m
+        ON i.movieId = h.id
+        LEFT JOIN  locations as l
+        ON m.locationId = l.id
+        WHERE m.id = @movieId
+        GROUP BY m.id;
     `;
+    const preparedSqlData = [
+      movieData.location.country,
+      movieData.title,
+      movieData.price,
+      movieData.rating,
+      ...movieData.images,
+    ];
 
-    console.log(sql);
-
-    const queryResponse = await mySqlConnection.query<mysql.ResultSetHeader>(sql);
-
-    console.log(queryResponse);
+    const [queryResultsArr] = await mySqlConnection.query(preparedSql, preparedSqlData);
+    const [createdMovie] = (queryResultsArr as CreateMovieQueryResult)[4];
 
     await mySqlConnection.end();
 
-    res.status(201).json({} as MovieModel);
+    res.status(201).json(createdMovie);
   } catch (err) {
     if (err instanceof ValidationError) {
       const manyErrors = err.errors.length > 1;
