@@ -1,11 +1,10 @@
 import { RequestHandler } from 'express';
-import mysql from 'mysql2/promise';
+import MovieService from '../../../services/movies-service';
 import { MovieModel } from '../types';
-import config from '../../../config';
 
 export const getMovie: RequestHandler<
     { id: string | undefined },
-    MovieModel | ResponseError,
+    MovieModel | ErrorResponse,
     {},
     {}
 > = async (req, res) => {
@@ -15,27 +14,12 @@ export const getMovie: RequestHandler<
         res.status(400).json({ error: 'server setup error' });
         return;
     }
-    const mySqlConnection = await mysql.createConnection(config.db);
 
-    const preparedSql = `
-    SELECT m.id, m.title, JSON_OBJECT('country', l.country) as location, m.price, m.rating, json_arrayagg(i.src) as images
-    FROM images as i
-    LEFT JOIN movies as m
-    ON i.movieId = m.id
-    LEFT JOIN  locations as l
-    ON m.locationId = l.id
-    WHERE m.id = ?
-    GROUP BY m.id;
-  `;
-  const preparedSqlData = [id];
-
-  const [movies] = await mySqlConnection.query<MovieModel[]>(preparedSql, preparedSqlData);
-  await mySqlConnection.end();
-
-    if (movies.length === 0) {
-        res.status(404).json({ error: `movie with id <${id}> was not found` });
-        return;
+    try {
+        const movie = await MovieService.getMovie(id);
+        res.status(200).json(movie);
+    } catch (error) {
+        const message = error instanceof Error ? error.message : 'request error';
+        res.status(404).json({ error: message });
     }
-
-    res.status(200).json(movies[0]);
   };

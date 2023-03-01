@@ -16,7 +16,7 @@ type CreateMovieQueryResult =
 
 export const createMovie: RequestHandler<
   {},
-  MovieModel | ResponseError,
+  MovieModel | ErrorResponse,
   MovieData,
   {}
 > = async (req, res) => {
@@ -38,12 +38,18 @@ export const createMovie: RequestHandler<
         INSERT INTO images (src, movieId) VALUES
         ${movieData.images.map(() => '(?, @movieId)').join(',\n')};
 
-        SELECT m.id, m.title, JSON_OBJECT('country', l.country) as location, m.price, m.rating, json_arrayagg(i.src) as images
+        SELECT 
+          m.id, 
+          m.title, 
+          JSON_OBJECT('country', l.country) as location,
+          m.price,
+          m.rating,
+        IF (COUNT(i.id) = 0, JSON_ARRAY(), JSON_ARRAYAGG(i.src)) as images
         FROM images as i
         LEFT JOIN movies as m
-        ON i.movieId = h.id
-        LEFT JOIN  locations as l
-        ON m.locationId = l.id
+        on i.movieId = m.id
+        LEFT JOIN locations as l
+        on m.locationId = l.id
         WHERE m.id = @movieId
         GROUP BY m.id;
     `;

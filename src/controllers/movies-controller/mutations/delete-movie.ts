@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express';
 import { MovieModel } from '../types';
-import movies from '../movies-data';
 
 export const deleteMovie: RequestHandler<
     { id: string | undefined },
-    MovieModel | ResponseError,
+    MovieModel | ErrorResponse,
     {},
     {}
 > = (req, res) => {
@@ -15,14 +14,10 @@ export const deleteMovie: RequestHandler<
         return;
     }
 
-    const foundMovieIndex = movies.findIndex((movie) => movie.id === id);
+    // if (foundMovieIndex === -1) {
+    //     res.status(400).json({ error: `movie was not found with id '${id}'` });
+    //     return;
+    // }
 
-    if (foundMovieIndex === -1) {
-        res.status(400).json({ error: `movie was not found with id '${id}'` });
-        return;
-    }
-
-    const [deletedMovie] = movies.splice(foundMovieIndex, 1);
-
-    res.status(204).json(deletedMovie);
+    res.status(204).json({} as MovieModel);
   };

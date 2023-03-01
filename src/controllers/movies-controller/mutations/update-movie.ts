@@ -6,7 +6,7 @@ import partialMovieDataValidationSchema from '../validation-schemas/partial-movi
 
 export const updateMovie: RequestHandler<
     { id: string | undefined },
-    MovieModel | ResponseError,
+    MovieModel | ErrorResponse,
     PartialMovieData,
     {}
 > = (req, res) => {
