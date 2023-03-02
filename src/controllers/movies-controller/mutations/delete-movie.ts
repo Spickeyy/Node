@@ -1,12 +1,13 @@
 import { RequestHandler } from 'express';
 import { MovieModel } from '../types';
+import MovieService from '../../../services/movies-service';
 
 export const deleteMovie: RequestHandler<
     { id: string | undefined },
     MovieModel | ErrorResponse,
     {},
     {}
-> = (req, res) => {
+> = async (req, res) => {
     const { id } = req.params;
 
     if (id === undefined) {
@@ -14,10 +15,16 @@ export const deleteMovie: RequestHandler<
         return;
     }
 
-    // if (foundMovieIndex === -1) {
-    //     res.status(400).json({ error: `movie was not found with id '${id}'` });
-    //     return;
-    // }
+    try {
+        const movie = await MovieService.getMovie(id);
+        await MovieService.deleteMovie(id);
 
-    res.status(204).json({} as MovieModel);
-  };
+        res.status(200).json(movie);
+    } catch (err) {
+        if (err instanceof Error) {
+            res.status(400).json({ error: err.message });
+        } else {
+            res.status(400).json({ error: 'Request error' });
+        }
+    }
+};

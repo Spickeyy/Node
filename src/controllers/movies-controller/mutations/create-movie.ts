@@ -1,18 +1,8 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
-import mysql from 'mysql2/promise';
 import { MovieModel, MovieData } from '../types';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
-import config from '../../../config';
-
-type CreateMovieQueryResult =
-[
-    mysql.ResultSetHeader,
-    mysql.ResultSetHeader,
-    mysql.ResultSetHeader,
-    mysql.ResultSetHeader,
-    MovieModel[],
-  ];
+import MovieService from '../../../services/movies-service';
 
 export const createMovie: RequestHandler<
   {},
@@ -24,47 +14,7 @@ export const createMovie: RequestHandler<
     const movieData: MovieData = movieDataValidationSchema
       .validateSync(req.body, { abortEarly: false });
 
-    const mySqlConnection = await mysql.createConnection(config.db);
-
-    const preparedSql = `
-        INSERT INTO locations (country) VALUES
-        (?);
-
-        INSERT INTO movies (title, price, rating, locationId) VALUES
-        (?, ?, ?, LAST_INSERT_ID());
-
-        SET @movieId = LAST_INSERT_ID();
-
-        INSERT INTO images (src, movieId) VALUES
-        ${movieData.images.map(() => '(?, @movieId)').join(',\n')};
-
-        SELECT 
-          m.id, 
-          m.title, 
-          JSON_OBJECT('country', l.country) as location,
-          m.price,
-          m.rating,
-        IF (COUNT(i.id) = 0, JSON_ARRAY(), JSON_ARRAYAGG(i.src)) as images
-        FROM images as i
-        LEFT JOIN movies as m
-        on i.movieId = m.id
-        LEFT JOIN locations as l
-        on m.locationId = l.id
-        WHERE m.id = @movieId
-        GROUP BY m.id;
-    `;
-    const preparedSqlData = [
-      movieData.location.country,
-      movieData.title,
-      movieData.price,
-      movieData.rating,
-      ...movieData.images,
-    ];
-
-    const [queryResultsArr] = await mySqlConnection.query(preparedSql, preparedSqlData);
-    const [createdMovie] = (queryResultsArr as CreateMovieQueryResult)[4];
-
-    await mySqlConnection.end();
+    const createdMovie = await MovieService.createMovie(movieData);
 
     res.status(201).json(createdMovie);
   } catch (err) {
