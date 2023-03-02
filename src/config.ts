@@ -36,7 +36,7 @@ const config = {
     user: DB_USER,
     password: DB_PASSWORD,
     port: Number(DB_PORT),
-    multipleStatments: true,
+    multipleStatements: true,
   },
 };
 
