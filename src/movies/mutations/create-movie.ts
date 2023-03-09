@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
 import { MovieViewModel, MovieData } from '../types';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
-import MoviesModel from '../movies-model';
+import MoviesModel from '../model';
 
 export const createMovie: RequestHandler<
   {},

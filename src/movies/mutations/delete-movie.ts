@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express';
-import MoviesModel from '../movies-model';
 import { MovieViewModel } from '../types';
+import MoviesModel from '../model';
 
-export const getMovie: RequestHandler<
+export const deleteMovie: RequestHandler<
     { id: string | undefined },
     MovieViewModel | ErrorResponse,
     {},
@@ -17,9 +17,14 @@ export const getMovie: RequestHandler<
 
     try {
         const movie = await MoviesModel.getMovie(id);
+        await MoviesModel.deleteMovie(id);
+
         res.status(200).json(movie);
-    } catch (error) {
-        const message = error instanceof Error ? error.message : 'request error';
-        res.status(404).json({ error: message });
+    } catch (err) {
+        if (err instanceof Error) {
+            res.status(400).json({ error: err.message });
+        } else {
+            res.status(400).json({ error: 'Request error' });
+        }
     }
-  };
+};

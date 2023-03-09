@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import MoviesModel from '../movies-model';
+import MoviesModel from '../model';
 import { MovieViewModel } from '../types';
 
 export const getMovies: RequestHandler<

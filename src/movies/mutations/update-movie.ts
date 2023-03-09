@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
-import MoviesModel from '../movies-model';
+import MoviesModel from '../model';
 import { MovieViewModel, PartialMovieData } from '../types';
 import partialMovieDataValidationSchema from '../validation-schemas/partial-movie-data-validation-schema';
 

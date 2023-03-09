@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import config from './config';
-import moviesController from './controllers/movies-controller';
+import movies from './movies';
 import './services/my-sql';
 
 const server = express();
@@ -10,7 +10,7 @@ const server = express();
 server.use(morgan('tiny'));
 server.use(express.static('public'));
 server.use(express.json());
-server.use('/api/movies', moviesController);
+server.use('/api/movies', movies);
 
 // Server init
 server.listen(config.server.port, () => {
