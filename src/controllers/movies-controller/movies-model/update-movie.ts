@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
-import config from '../../../config';
-import { colonObjectQueryFormat } from '../../../services/my-sql';
+import config from 'config';
+import { colonObjectQueryFormat } from 'services/my-sql';
 import { MovieViewModel, PartialMovieData } from '../types';
 import SQL from './sql';
 
