@@ -1,14 +1,14 @@
 import { RequestHandler } from 'express';
-import MovieService from '../../../services/movies-service';
-import { MovieModel } from '../types';
+import MoviesModel from '../movies-model';
+import { MovieViewModel } from '../types';
 
 export const getMovies: RequestHandler<
     {},
-    MovieModel[],
+    MovieViewModel[],
     {},
     {}
 > = async (req, res) => {
-    const movies = await MovieService.getMovies();
+    const movies = await MoviesModel.getMovies();
 
     res.status(200).json(movies);
   };

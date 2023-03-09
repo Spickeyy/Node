@@ -1,6 +1,6 @@
 import { RowDataPacket } from 'mysql2';
 
-type PrivateMovieModel = {
+type PrivateViewMovieModel = {
     id: number,
     title: string,
     location: {
@@ -11,8 +11,8 @@ type PrivateMovieModel = {
     rating: number
 };
 
-export type MovieModel = PrivateMovieModel & RowDataPacket;
+export type MovieViewModel = PrivateViewMovieModel & RowDataPacket;
 
-export type MovieData = Omit<PrivateMovieModel, 'id'>;
+export type MovieData = Omit<PrivateViewMovieModel, 'id'>;
 
 export type PartialMovieData = Partial<MovieData>;

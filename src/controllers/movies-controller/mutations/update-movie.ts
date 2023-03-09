@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
-import MovieService from '../../../services/movies-service';
-import { MovieModel, PartialMovieData } from '../types';
+import MoviesModel from '../movies-model';
+import { MovieViewModel, PartialMovieData } from '../types';
 import partialMovieDataValidationSchema from '../validation-schemas/partial-movie-data-validation-schema';
 
 export const updateMovie: RequestHandler<
     { id: string | undefined },
-    MovieModel | ErrorResponse,
+    MovieViewModel | ErrorResponse,
     PartialMovieData,
     {}
 > = async (req, res) => {
@@ -23,7 +23,7 @@ export const updateMovie: RequestHandler<
              { abortEarly: false },
         );
 
-        const updatedMovie = await MovieService.updateMovie(id, partialMovieData);
+        const updatedMovie = await MoviesModel.updateMovie(id, partialMovieData);
             res.status(200).json(updatedMovie);
   } catch (err) {
     if (err instanceof ValidationError) {

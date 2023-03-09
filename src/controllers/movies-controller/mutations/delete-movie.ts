@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express';
-import { MovieModel } from '../types';
-import MovieService from '../../../services/movies-service';
+import { MovieViewModel } from '../types';
+import MoviesModel from '../movies-model';
 
 export const deleteMovie: RequestHandler<
     { id: string | undefined },
-    MovieModel | ErrorResponse,
+    MovieViewModel | ErrorResponse,
     {},
     {}
 > = async (req, res) => {
@@ -16,8 +16,8 @@ export const deleteMovie: RequestHandler<
     }
 
     try {
-        const movie = await MovieService.getMovie(id);
-        await MovieService.deleteMovie(id);
+        const movie = await MoviesModel.getMovie(id);
+        await MoviesModel.deleteMovie(id);
 
         res.status(200).json(movie);
     } catch (err) {

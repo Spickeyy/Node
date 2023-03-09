@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
 import { ValidationError } from 'yup';
-import { MovieModel, MovieData } from '../types';
+import { MovieViewModel, MovieData } from '../types';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
-import MovieService from '../../../services/movies-service';
+import MoviesModel from '../movies-model';
 
 export const createMovie: RequestHandler<
   {},
-  MovieModel | ErrorResponse,
+  MovieViewModel | ErrorResponse,
   MovieData,
   {}
 > = async (req, res) => {
@@ -14,7 +14,7 @@ export const createMovie: RequestHandler<
     const movieData: MovieData = movieDataValidationSchema
       .validateSync(req.body, { abortEarly: false });
 
-    const createdMovie = await MovieService.createMovie(movieData);
+    const createdMovie = await MoviesModel.createMovie(movieData);
 
     res.status(201).json(createdMovie);
   } catch (err) {
