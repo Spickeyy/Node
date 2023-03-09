@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { ValidationError } from 'yup';
+import ErrorService from 'services/error-service';
 import { MovieViewModel, MovieData } from '../types';
 import movieDataValidationSchema from '../validation-schemas/movie-data-validation-schema';
 import MoviesModel from '../model';
@@ -18,16 +18,7 @@ export const createMovie: RequestHandler<
 
     res.status(201).json(createdMovie);
   } catch (err) {
-    if (err instanceof ValidationError) {
-      const manyErrors = err.errors.length > 1;
-      res.status(400).json({
-        error: manyErrors ? 'Validation errors' : err.errors[0],
-        errors: manyErrors ? err.errors : undefined,
-      });
-    } else if (err instanceof Error) {
-      res.status(400).json({ error: err.message });
-    } else {
-      res.status(400).json({ error: 'Request error' });
-    }
+    const [status, errorResponse] = ErrorService.handleError(err);
+        res.status(status).json(errorResponse);
   }
 };
