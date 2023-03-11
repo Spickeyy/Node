@@ -19,6 +19,6 @@ export const createMovie: RequestHandler<
     res.status(201).json(createdMovie);
   } catch (err) {
     const [status, errorResponse] = ErrorService.handleError(err);
-        res.status(status).json(errorResponse);
+      res.status(status).json(errorResponse);
   }
 };

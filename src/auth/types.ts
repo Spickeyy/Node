@@ -6,12 +6,12 @@ type UserViewModel = {
     role: 'ADMIN' | 'USER'
 };
 
-export type AuthBody = {
+export type Credentials = {
     email: string,
     password: string,
 };
 
-export type AuthBodyPartial = Partial<AuthBody>;
+export type CredentialPartial = Partial<Credentials>;
 
 export type AuthSuccessResponse = {
     token: string,

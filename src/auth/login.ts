@@ -1,14 +1,21 @@
 import { RequestHandler } from 'express';
-import { AuthBodyPartial, AuthSuccessResponse } from './types';
+import ErrorService from 'services/error-service';
+import { CredentialPartial, AuthSuccessResponse } from './types';
+import credentialsValidationSchema from './validation-schemas/credentials-validation-schema';
 
 export const login: RequestHandler<
     {},
     AuthSuccessResponse | ErrorResponse,
-    AuthBodyPartial,
+    CredentialPartial,
     {}
 
 > = (req, res) => {
-    const credentials = req.body;
+    try {
+    const credentials = credentialsValidationSchema.validateSync(req.body, { abortEarly: false });
 
-    res.status(200).json(req.body as AuthSuccessResponse);
+    res.status(200).json(credentials as unknown as AuthSuccessResponse);
+    } catch (err) {
+        const [status, errorResponse] = ErrorService.handleError(err);
+        res.status(status).json(errorResponse);
+    }
 };
