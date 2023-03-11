@@ -1,7 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
-import config from './config';
-import movies from './movies';
+import config from 'config';
+import movies from 'movies';
+import auth from 'auth';
 import './services/my-sql';
 
 const server = express();
@@ -11,6 +12,7 @@ server.use(morgan('tiny'));
 server.use(express.static('public'));
 server.use(express.json());
 server.use('/api/movies', movies);
+server.use('/api/auth', auth);
 
 // Server init
 server.listen(config.server.port, () => {
