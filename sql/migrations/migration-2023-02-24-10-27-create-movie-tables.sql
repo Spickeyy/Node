@@ -8,7 +8,7 @@ create table bjccicbf65x3zea6wbni.locations (
 create table bjccicbf65x3zea6wbni.movies (
 	id int4 unsigned primary key auto_increment,
     title varchar(256) not null,
-    locationId int4 unsigned not null unique,
+    locationId int4 unsigned not null,
     price float8 unsigned not null,
     rating float4 unsigned not null,
     createdAt timestamp default current_timestamp,
