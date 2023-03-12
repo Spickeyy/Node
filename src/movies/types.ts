@@ -9,12 +9,20 @@ type PrivateViewMovieModel = {
     images: string[],
     price: number,
     rating: number,
-    userId: number,
+    user: {
+      id: number,
+      name: string,
+      surname: string,
+      email: string,
+      mobile: string,
+    },
 };
 
 export type MovieViewModel = PrivateViewMovieModel & RowDataPacket;
 
-export type MovieData = Omit<PrivateViewMovieModel, 'id'>;
+export type MovieData = Omit<PrivateViewMovieModel, 'id' | 'user'> & {
+  userId: number,
+};
 
 export type MovieBody = Omit<MovieData, 'userId'>;
 

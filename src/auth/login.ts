@@ -11,7 +11,6 @@ export const login: RequestHandler<
     AuthSuccessResponse | ErrorResponse,
     CredentialsPartial,
     {}
-
 > = async (req, res) => {
     try {
     const credentials = credentialsValidationSchema.validateSync(req.body, { abortEarly: false });

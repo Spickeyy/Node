@@ -7,6 +7,7 @@ const SELECT = `
     m.rating, 
     IF(COUNT(i.id) = 0, JSON_ARRAY(), JSON_ARRAYAGG(i.src)) as images,
     JSON_OBJECT(
+      'id', u.id,
       'name', u.name,
       'surname', u.surname,
       'email', u.email,
