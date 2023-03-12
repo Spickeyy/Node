@@ -15,13 +15,12 @@ export const deleteMovie: RequestHandler<
     try {
         if (id === undefined) throw new ServerSetupError();
         if (req.authData === undefined) throw new ServerSetupError();
+
         const user = await UserModel.getUserByEmail(req.authData.email);
         const movie = await MoviesModel.getMovie(id);
-
         if (user.role !== 'ADMIN' && user.id !== movie.user.id) throw new ForbiddenError();
 
         await MoviesModel.deleteMovie(id);
-
         res.status(200).json(movie);
     } catch (err) {
         const [status, errorResponse] = ErrorService.handleError(err);
