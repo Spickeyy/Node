@@ -19,6 +19,16 @@ const registrationDataValidationSchema: yup.ObjectSchema<RegistrationData> = yup
         .required('Password must be confirmed')
         .oneOf([yup.ref('password')], 'Incorrect password'),
 
+    name: yup.string()
+        .required('Name is required')
+        .min(2, 'Name must have at least 2 symbols')
+        .max(32, 'Name can\'t have more than 32 symbols'),
+
+    surname: yup.string()
+        .required('Surname is required')
+        .min(2, 'Surname must have at least 2 symbols')
+        .max(32, 'Surname can\'t have more than 32 symbols'),
+
 }).strict(true);
 
 export default registrationDataValidationSchema;
