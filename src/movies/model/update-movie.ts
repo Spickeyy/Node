@@ -1,13 +1,13 @@
 import mysql from 'mysql2/promise';
 import config from 'config';
 import { colonObjectQueryFormat } from 'services/my-sql';
-import { MovieViewModel, PartialMovieData } from '../types';
+import { MovieViewModel, PartialMovieBody } from '../types';
 import SQL from './sql';
 
 type PrepareSqlResult = [ string, Record<string, string>];
 
 type PrepareSql = (
-  movieData: PartialMovieData
+  movieData: PartialMovieBody
   ) => PrepareSqlResult;
 
 const prepareImagesSql: PrepareSql = (movieData) => {
@@ -67,7 +67,7 @@ const prepateMovieSql: PrepareSql = (movieData) => {
 
 export const updateMovie = async (
     id: string,
-    movieData: PartialMovieData,
+    movieData: PartialMovieBody,
     ): Promise<MovieViewModel> => {
     const mySqlConnection = await mysql.createConnection(config.db);
     mySqlConnection.config.queryFormat = colonObjectQueryFormat;

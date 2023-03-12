@@ -8,11 +8,14 @@ type PrivateViewMovieModel = {
     },
     images: string[],
     price: number,
-    rating: number
+    rating: number,
+    userId: number,
 };
 
 export type MovieViewModel = PrivateViewMovieModel & RowDataPacket;
 
 export type MovieData = Omit<PrivateViewMovieModel, 'id'>;
 
-export type PartialMovieData = Partial<MovieData>;
+export type MovieBody = Omit<MovieData, 'userId'>;
+
+export type PartialMovieBody = Partial<MovieBody>;

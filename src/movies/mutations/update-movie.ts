@@ -1,13 +1,13 @@
 import { RequestHandler } from 'express';
 import ErrorService, { ServerSetupError } from 'services/error-service';
 import MoviesModel from '../model';
-import { MovieViewModel, PartialMovieData } from '../types';
+import { MovieViewModel, PartialMovieBody } from '../types';
 import partialMovieDataValidationSchema from '../validation-schemas/partial-movie-data-validation-schema';
 
 export const updateMovie: RequestHandler<
     { id: string | undefined },
     MovieViewModel | ErrorResponse,
-    PartialMovieData,
+    PartialMovieBody,
     {}
 > = async (req, res) => {
     const { id } = req.params;

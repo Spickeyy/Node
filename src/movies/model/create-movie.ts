@@ -18,8 +18,9 @@ export const createMovie = async (movieData: MovieData): Promise<MovieViewModel>
       INSERT INTO locations (country) VALUES 
       (?);
       
-      INSERT INTO movies (title, price, rating, locationId) VALUES
-      (?, ?, ?, LAST_INSERT_ID());
+      INSERT INTO movies (title, price, rating, userId, locationId) VALUES
+      (?, ?, ?, ?, LAST_INSERT_ID());
+
       SET @movieId = LAST_INSERT_ID();
       
       INSERT INTO images (src, movieId) VALUES
@@ -34,6 +35,7 @@ export const createMovie = async (movieData: MovieData): Promise<MovieViewModel>
       movieData.title,
       movieData.price,
       movieData.rating,
+      movieData.userId,
       ...movieData.images,
     ];
 

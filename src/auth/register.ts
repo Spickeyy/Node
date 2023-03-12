@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import ErrorService from 'services/error-service';
+import UserModel from 'models/user-model';
 import { createAuthSuccessResponse } from './helpers/create-auth-success-response';
-import UserModel from './model';
 import { AuthSuccessResponse, RegistrationBody } from './types';
 import registrationDataValidationSchema from './validation-schemas/registration-data-validation-schema';
 
