@@ -17,7 +17,7 @@ const registrationDataValidationSchema: yup.ObjectSchema<RegistrationData> = yup
 
     passwordConfirmation: yup.string()
         .required('Password must be confirmed')
-        .oneOf([yup.ref('password')], 'Incorrect password'),
+        .oneOf([yup.ref('password')], 'passwords must match'),
 
     name: yup.string()
         .required('Name is required')

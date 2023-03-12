@@ -3,8 +3,7 @@ import { Credentials } from '../types';
 
 const credentialsValidationSchema: yup.ObjectSchema<Credentials> = yup.object({
     email: yup.string()
-        .required('Email is required')
-        .email('Incorrect email format'),
+        .required('Email is required'),
 
     password: yup.string()
         .required('Password is required'),
