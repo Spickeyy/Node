@@ -1,11 +1,10 @@
-import config from 'config';
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
 import ErrorService from 'services/error-service';
-import bcrypt from 'bcrypt';
+import BcryptService from 'services/brcrypt-service';
 import UserModel from './model';
-import { CredentialsPartial, AuthSuccessResponse, UserViewModel } from './types';
+import { CredentialsPartial, AuthSuccessResponse } from './types';
 import credentialsValidationSchema from './validation-schemas/credentials-validation-schema';
+import { createAuthSuccessResponse } from './helpers/create-auth-success-response';
 
 export const login: RequestHandler<
     {},
@@ -17,26 +16,14 @@ export const login: RequestHandler<
     try {
     const credentials = credentialsValidationSchema.validateSync(req.body, { abortEarly: false });
     const user = await UserModel.getUser(credentials.email);
-    const validPassword = await bcrypt.compare(credentials.password, user.password);
+    const validPassword = BcryptService.compare(credentials.password, user.password);
 
     if (!validPassword) throw new Error('Incorrect password');
-    const token = jwt.sign({ email: user.email, role: user.role }, config.secret.jwtTokenKey);
 
-    const userViewModel: UserViewModel = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        surname: user.surname,
-        role: user.role,
-
-    };
-
-    res.status(200).json({
-        token,
-        user: userViewModel,
-    });
+    const authSuccessResponse = createAuthSuccessResponse(user);
+        res.status(200).json(authSuccessResponse);
     } catch (err) {
-        const [status, errorResponse] = ErrorService.handleError(err);
+    const [status, errorResponse] = ErrorService.handleError(err);
         res.status(status).json(errorResponse);
     }
 };
